@@ -27,7 +27,7 @@ public class Job
     public int RecruiterId { get; set; } // navigation to reach company // foreign key
 
     //[NotMapped]
-    //[JsonIgnore] // so not in swagger
+    [JsonIgnore] // so not in swagger
     //[ForeignKey("RecruiterId")] not needed because conventional name used for id
     public Recruiter? Recruiter { get; set; }
 

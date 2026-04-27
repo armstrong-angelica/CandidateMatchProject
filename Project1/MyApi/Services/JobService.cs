@@ -140,7 +140,7 @@ public class JobService : IJobService
     }
 
     
-    public async Task<Job> UpdateJobStatusAsync(int id, string status)
+    /* public async Task<Job> UpdateJobStatusAsync(int id, string status)
     {
         if(status != "Opened" && status != "Closed")
         {
@@ -148,7 +148,7 @@ public class JobService : IJobService
         }
 
         return await _repo.UpdateStatus(id, status);
-    }
+    } */
 
     public async Task<Job> HireAsync(int jobId, int candidateId)
     {

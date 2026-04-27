@@ -14,9 +14,9 @@ public class RecruiterService : IRecruiterService
     }
 
 
-    public async Task<List<Recruiter>> GetAllRecruitersAsync()
+    public async Task<List<RecruiterDto>> GetAllRecruitersAsync()
     {
-        List<Recruiter> result = await _repo.GetAllRecruiters();
+        List<RecruiterDto> result = await _repo.GetAllRecruiters();
 
         if (result is null)
         {
@@ -27,14 +27,14 @@ public class RecruiterService : IRecruiterService
     }
 
 
-    public async Task<Recruiter> GetRecruiterByIdAsync(int id)
+    public async Task<RecruiterDto> GetRecruiterByIdAsync(int id)
     {
         if (id <= 0)
         {
             throw new ArgumentOutOfRangeException("Id must be greater than 0");
         }
         
-        Recruiter? result = await _repo.GetRecruiter(id);
+        RecruiterDto? result = await _repo.GetRecruiter(id);
 
         if (result is null)
         {

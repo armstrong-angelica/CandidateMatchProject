@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+/* using System.ComponentModel.DataAnnotations;
 using MyApp.Core.Models;
 
 namespace MyApi.DTOs;
@@ -17,4 +17,4 @@ public class CandidateDto
     public int Id { get; set; }
     public string? Name { get; set; }
     public string? HighestEducation { get; set; }
-}
+} */

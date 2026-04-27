@@ -5,8 +5,8 @@ namespace MyApi.Services;
 
 public interface IRecruiterService
 {
-    Task<List<Recruiter>> GetAllRecruitersAsync();
-    Task<Recruiter> GetRecruiterByIdAsync(int id);
+    Task<List<RecruiterDto>> GetAllRecruitersAsync();
+    Task<RecruiterDto> GetRecruiterByIdAsync(int id);
     Task<Recruiter> CreateRecruiterAsync(NewRecruiterDTO newRecruiter);
 
 }

@@ -18,7 +18,7 @@ public class RecruiterController : ControllerBase
 
     //Get All Recruiters (From Admin View)
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Recruiter>>> GetAllRecruiter()
+    public async Task<ActionResult<IEnumerable<RecruiterDto>>> GetAllRecruiter()
     {
         try
         {
@@ -40,7 +40,7 @@ public class RecruiterController : ControllerBase
 
     //Get Recruiters By Id
     [HttpGet("{RecruiterId}")]
-    public async Task<ActionResult<Recruiter>> GetRecruiterId(int RecruiterId)
+    public async Task<ActionResult<RecruiterDto>> GetRecruiterId(int RecruiterId)
     {
         try
         {

@@ -128,7 +128,7 @@ public class JobController : ControllerBase
     }
 
 
-    //Update status col for job
+    /* //Update status col for job
     [HttpPatch("/StatusUpdate/{JobId}")]
     public async Task<ActionResult<Job>> UpdateJobStatus(int JobId, string status)
     {
@@ -140,7 +140,7 @@ public class JobController : ControllerBase
         {
             return BadRequest(e.Message);
         }
-    }
+    } */
 
     //Hire Process
     [HttpPatch("Job={JobId}/Hire={CandidateId}")]
@@ -156,27 +156,6 @@ public class JobController : ControllerBase
         }
     }
 
-
-
-
-    //put - replacing row
-    //patch - update specific cols/info in row
-
-    /* [HttpPatch]
-    public async Task<ActionResult> AddCandidatesToJob(JobCandidateDTO updateInfo)
-    {
-        try
-        {
-            await _jobService.AddCandidatesToJob(updateInfo);
-        }
-        catch(Exception e)
-        {
-            return BadRequest(e.Message);
-        }
-
-        //return updated entity
-        return NoContent(); // not echoing updated object
-    } */
     
 //gets are safe because no risk in data loss (item potent) - changes when first called but if called again it doesn't do anything
 //post, unless checking if item already exists, 

@@ -17,3 +17,9 @@ public class NewJobDTO
 
     //public List<Skills> Skills { get; set; } = new();
 }
+
+public class JobDto
+{
+    public int Id { get; set; }
+    public string? Title { get; set; }
+}

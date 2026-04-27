@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using MyApi.DTOs;
@@ -31,6 +32,13 @@ public class JobRepo : IJobRepo
                         && c.Status != "Hired"
                          && !existingCandidateIds.Contains(c.Id))
                 .ToListAsync();
+
+            /* var candidates = await _context.Candidates
+    .Where(c => c.HighestEducation >= job.RequiredEducation
+        && !string.Equals(c.Status, "Hired", StringComparison.OrdinalIgnoreCase)
+        && !_context.JobCandidateMatches
+            .Any(m => m.JobId == job.Id && m.CandidateId == c.Id))
+    .ToListAsync(); */
 
             var matches = candidates.Select(c => new JobCandidateMatch
             {
@@ -81,7 +89,7 @@ public class JobRepo : IJobRepo
         .Include(j => j.Match)
         .ThenInclude(m => m.Candidate)
         .Where(j => j.Status == status)
-        .ToListAsync(); 
+        .ToListAsync();
         //return jobs;
     }
 
@@ -90,18 +98,8 @@ public class JobRepo : IJobRepo
     {
         _context.Jobs.Add(newJob);
         await _context.SaveChangesAsync();
+        return newJob;
 
-        List<Job> jobs = await _context.Jobs.Where(j => j.Id == newJob.Id).ToListAsync();
-        await GenerateMatchesForAllJobs(jobs);
-
-
-        return await _context.Jobs
-        .Include(j => j.Match)
-        .ThenInclude(m => m.Candidate)
-        .FirstOrDefaultAsync(j => j.Id == newJob.Id);
-
-        //object updated to reflact what was created/updated
-        //return newJob;
     }
 
     public async Task<Boolean> FindRecruiter(int id)
@@ -144,23 +142,23 @@ public class JobRepo : IJobRepo
         await _context.SaveChangesAsync();
     }
 
-    public async Task<Job> UpdateStatus(int id, string status)
-    {
-        Job? job = await _context.Jobs.FirstOrDefaultAsync(c => c.Id == id);
-        if (job is null)
-        {
-            throw new KeyNotFoundException($"Job id={id} not found");
-        }
+    /*   public async Task<Job> UpdateStatus(int id, string status)
+      {
+          Job? job = await _context.Jobs.FirstOrDefaultAsync(c => c.Id == id);
+          if (job is null)
+          {
+              throw new KeyNotFoundException($"Job id={id} not found");
+          }
 
-        //does status already exists
-        if (job.Status == status)
-        {
-            throw new InvalidOperationException($"Job's status already set to {status}");
-        }
-        job.Status = status;
-        await _context.SaveChangesAsync();
-        return job;
-    }
+          //does status already exists
+          if (job.Status == status)
+          {
+              throw new InvalidOperationException($"Job's status already set to {status}");
+          }
+          job.Status = status;
+          await _context.SaveChangesAsync();
+          return job;
+      } */
 
     public async Task<Job> Hire(int jobId, int candidateId)
     {
@@ -188,43 +186,26 @@ public class JobRepo : IJobRepo
             throw new InvalidOperationException($"Candidate with id={can.Id} has highest education of {can.HighestEducation}, which is lower then the required education of {job.RecruiterId}");
         }
 
+        var match = job.Match
+    .FirstOrDefault(m => m.CandidateId == candidateId && m.JobId == jobId);
+
+        if (match == null)
+        {
+            throw new Exception("Match not found");
+        }
+
         job.Status = "Closed";
         job.HiredCandidateId = candidateId;
         job.HiredCandidate = can;
         can.Status = "Hired";
+        match.Status = "Hired";
+
+
+
 
         await _context.SaveChangesAsync();
         return job;
     }
-
-    /*public async Task UpdateJobCandidates(JobCandidateDTO updateInfo)
-    {
-        //grab job using PK, else if null then excception
-        //Job job = await _context.Jobs.FindAsync(); //default loading = explicit - loads needed data
-        Job? job = await _context.Jobs.Include(j => j.Candidates).FirstOrDefaultAsync(j => j.Id == updateInfo.JobId);
-        if (job is null)
-        {
-            throw new KeyNotFoundException($"Job {updateInfo.JobId} not found");
-        }
-        //grab Candidate using PK, else if null then excception
-        Candidate? can = await _context.Candidates.FindAsync(updateInfo.CandidateId);
-        if (can is null) //dont want db operations to silently fail
-        {
-            throw new KeyNotFoundException($"Candidate {updateInfo.CandidateId} not found");
-        }
-
-        //does relationship already exists
-        if (job.Candidates.Any(c => c.Id == updateInfo.CandidateId))
-        {
-            throw new Exception("Job already contains this Candidate");
-        }
-
-        job.Candidates.Add(can);
-        await _context.SaveChangesAsync();
-    }
-    */
-
-
 
 
 }

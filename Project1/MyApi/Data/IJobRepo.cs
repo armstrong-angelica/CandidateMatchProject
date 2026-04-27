@@ -13,9 +13,9 @@ public interface IJobRepo
     Task<Boolean> FindRecruiter(int id);
     Task<Job?> GetJobByID(int id);
     Task DeleteJob(Job job);
-    Task<Job> UpdateStatus(int id, string status);
+    //Task<Job> UpdateStatus(int id, string status);
     Task<Job> Hire(int jobId, int candidateId);
-    
+
     //Task Match(Job newJob);
     //Task UpdateJobCandidates(JobCandidateDTO updateInfo);
 }
