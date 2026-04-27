@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="CandidateMatcher.Tests/CandidateMatcher.Tests.csproj" />
+  <Project Path="MyApi/MyApi.csproj" />
+  <Project Path="MyApp.Core/MyApp.Core.csproj" />
+</Solution>

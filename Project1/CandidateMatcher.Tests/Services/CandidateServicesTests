@@ -1,0 +1,49 @@
+using Moq;
+using MyApi.Data;
+using MyApi.Services;
+using MyApp.Core.Models;
+
+namespace CandidateMatcher.Tests.Services;
+
+public class CandidateServiceTests
+{
+    //moq = create fake objects to avoid calling real code
+
+    //fake repo layer object
+    private readonly Mock<ICandidateRepo> _repoMock;
+
+    //create actual service object
+    private readonly CandidateService _sut; //system under test
+
+    public CandidateServiceTests()
+    {
+        //creating mock objects for dependencies
+        _repoMock = new Mock<ICandidateRepo>();
+                
+        //mock objects to satify RecruiterService constructor 
+        _sut= new CandidateService(_repoMock.Object);
+    }
+
+
+    [Fact]
+    public async Task GetCandidatesByStatusAsync_InvalidStatus_Throws()
+    {
+        await Assert.ThrowsAsync<ArgumentException>(
+            () => _sut.GetCandidatesByStatusAsync("active") //needs to be exact
+        );
+
+    _repoMock.Verify(r => r.FilterCandidatesByStatus(It.IsAny<string>()),Times.Never);
+    }
+    
+
+    [Fact]
+    public async Task UpdateCandidateEducationAsync_InvalidEducationLevel_Throws()
+    {
+        await Assert.ThrowsAsync<ArgumentException>(
+            () => _sut.UpdateCandidateEducationAsync(2, "Associates") 
+        );
+
+    _repoMock.Verify(r => r.GetCandidate(It.IsAny<int>()),Times.Never);
+    }
+    
+}

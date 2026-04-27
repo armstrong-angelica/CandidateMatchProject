@@ -1,0 +1,36 @@
+public class tests{
+
+    //dependecies inject
+    private readonly Mock<IEntityRepo> _repoMock;
+    private readonly Mock<IMemoryCache> _cacheMock;
+
+//constructor{
+    repo Mock
+    cache Mock
+}
+
+//
+[Type]
+public async Task methodName(){
+    //objects arranfed already
+
+    await Assert.ThrowsAsync<typeException>(
+        () => _object.method(0)
+    )
+
+    //assert, certain methods fired x amount of times
+    _repoMock.Verify(r => r.method(It.isAny<int>(), Times.Never))
+    _repoMock.Verify(r => r.method(It.isAny<Entity>(), Times.Never))
+
+    //cache never touched
+    _cacheMock.Verify(r => r.Remove(It.isAny<Object>(), Times.Never))
+
+
+}
+
+//cd to .tests
+//dotnet test
+
+
+
+}
